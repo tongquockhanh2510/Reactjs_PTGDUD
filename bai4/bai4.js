@@ -1,14 +1,25 @@
 
-const calcTip = (bill) => bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+const calcAverage = (a, b, c) => (a + b + c) / 3;
 
-console.log(calcTip(100)); 
+const dolphinsData1 = calcAverage(44, 23, 71);
+const koalasData1 = calcAverage(65, 54, 49);
 
-const bills = [125, 555, 44];
+const dolphinsData2 = calcAverage(85, 54, 41);
+const koalasData2 = calcAverage(23, 34, 27);
 
-const tips = bills.map(calcTip);
+const checkWinner = (avgDolphins, avgKoalas) => {
+  if (avgDolphins >= 2 * avgKoalas) {
+    console.log(`Dolphins win (${avgDolphins} vs. ${avgKoalas})`);
+  } else if (avgKoalas >= 2 * avgDolphins) {
+    console.log(`Koalas win (${avgKoalas} vs. ${avgDolphins})`);
+  } else {
+    console.log('No team wins!');
+  }
+};
 
-const total = bills.map((bill, index) => bill + tips[index]);
+// Step 4: Determine the winner for both datasets
+console.log('Results for Data 1:');
+checkWinner(dolphinsData1, koalasData1);
 
-console.log("Hóa đơn:", bills);
-console.log("Tiền tip:", tips);
-console.log("Tổng giá trị:", total);
+console.log('Results for Data 2:');
+checkWinner(dolphinsData2, koalasData2);
