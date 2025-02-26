@@ -1,0 +1,37 @@
+.search {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 5px 5px;
+    font-weight: 400;
+    font-family: inherit;
+    background-color: #dacbcb;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin-left: 20px;
+  }
+  .search:hover {
+    border-color: #646cff;
+  }
+  nav{
+    display: flex;
+    ul{
+      display: flex;
+      list-style-type: none;
+    }
+    li{
+      margin-right: 30px;
+    }
+    button{
+      display: inline-block;
+      background-color: rgb(226, 213, 215);
+      color: rgb(134, 66, 66);
+      padding: 5px 5px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        font-family: inherit;
+      button:hover {
+        border-color: #646cff;
+      }
+      margin-right: 50px;
+    }
+  }
