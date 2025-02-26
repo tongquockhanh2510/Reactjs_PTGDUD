@@ -1,0 +1,27 @@
+.contact{
+    border: 1px solid;
+    border-radius: 10px;
+    margin: 10px;
+    div{
+        border-top: 1px solid;
+        h1, h3, p{
+            margin: 10px 10px;
+
+        }
+    }
+
+}
+
+.contact div:first-child{
+    border-top: none;
+}
+
+.div-detele{
+    padding: 10px;
+    display: flex;
+    justify-content: right;
+    button{
+        background-color: brown;
+        color: white;
+    }
+}
