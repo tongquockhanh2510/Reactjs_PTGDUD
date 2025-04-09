@@ -9,7 +9,7 @@ const Header = ({ title }) => {
             </div>
             <img src="../img/Bell 1.png" alt="" className="ms-3"/>
             <img src="../img/Question 1.png" alt="" className="ms-3"/>
-            <img src="../img/Avatar 313.png" alt="" className="ms-3"/>
+            <img src="../img/Avatar.png" alt="" className="ms-3"/>
             </div>
             
         </div>
