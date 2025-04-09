@@ -5,5 +5,7 @@ table{
 table thead tr th{
     background: #F2F9FF !important;
 }
-
+table tbody tr {
+    border-bottom: 1px solid #756d6d;
+}
     
