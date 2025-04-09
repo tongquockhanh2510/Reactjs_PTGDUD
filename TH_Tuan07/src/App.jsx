@@ -11,6 +11,7 @@ import Project from './pages/Project'
 import Teams from './pages/Teams'
 import Messages from './pages/Messages'
 import Integrations from './pages/Integrations'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   const location = useLocation();
