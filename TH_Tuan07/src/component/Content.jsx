@@ -12,6 +12,7 @@ const Content = () => {
     const [turnover, setTurnover] = useState({ value: 0, change: 0 });
     const [profit, setProfit] = useState({ value: 0, change: 0 });
     const [newCustomers, setNewCustomers] = useState({ value: 0, change: 0 });
+    const [customers, setCustomers] = useState([]);
     useEffect(() => {
        axios.get('http://localhost:5000/turnover').then(res => {
         setTurnover(res.data);
@@ -21,6 +22,9 @@ const Content = () => {
        })
        axios.get('http://localhost:5000/new-customers').then(res => {
         setNewCustomers(res.data);
+       })
+       axios.get('http://localhost:5000/customers').then(res => {
+        setCustomers(res.data);
        })
     }, [])
 
@@ -136,15 +140,18 @@ const Content = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" /></td>
-                                <td>John Doe</td>
-                                <td>Company A</td>
-                                <td>$1000</td>
-                                <td>2023-01-01</td>
-                                <td>Active</td>
-                                <td><img src="../img/create.png" alt="" /></td>
-                            </tr>
+                            {customers.map(customer => (
+                                <tr key={customer.id}>
+                                    <td><input type="checkbox" /></td>
+                                    <td> <img src={customer.image}  /> {customer.name}</td>
+                                    <td>{customer.company}</td>
+                                    <td>{customer.orderValue}</td>
+                                    <td>{customer.orderDate}</td>
+                                    <td> <span className={`badge ${customer.status === 'Completed' ? 'bg-success' : customer.status === 'in-progress' ? 'bg-warning' : 'bg-danger'}`} >{customer.status}</span></td>
+                                    <td><img src="../img/create.png" alt="" /></td>
+                                </tr>
+                            ))}
+                        
                         </tbody>
                     </table>
                 </div>
