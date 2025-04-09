@@ -74,6 +74,24 @@
       "orderValue": 7000,
       "orderDate": "2023-01-07",
       "status": "New"
+    },
+    {
+      "id": 8,
+      "name": "àdasdf",
+      "company": "ádfafsd",
+      "orderValue": "4",
+      "orderDate": "2025-04-11",
+      "status": "in-progress",
+      "image": "adsfad"
+    },
+    {
+      "id": 9,
+      "name": "àddasdf",
+      "company": "Company F",
+      "orderValue": "3",
+      "orderDate": "2025-04-07",
+      "status": "New",
+      "image": "https://res.cloudinary.com/daoanjou9/image/upload/v1744181734/customer/srifa9xk6fj9kauyemua.png"
     }
   ]
 }

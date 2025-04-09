@@ -15,13 +15,15 @@ const Dashboard = () => {
     const [newCustomers, setNewCustomers] = useState({ value: 0, change: 0 });
     const [customers, setCustomers] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [modalMode, setModalMode] = useState('edit');
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         company: '',
         orderValue: '',
         orderDate: '',
-        status: ''
+        status: '',
+        image: '' 
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -40,6 +42,7 @@ const Dashboard = () => {
                 setTurnover(turnoverRes.data);
                 setProfit(profitRes.data);
                 setNewCustomers(newCustomersRes.data);
+                console.log('Dữ liệu khách hàng:', customersRes.data);
                 setCustomers(customersRes.data);
                 setTotalResults(customersRes.data.length);
                 setTotalPages(Math.ceil(customersRes.data.length / itemsPerPage));
@@ -54,16 +57,30 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
-    const handleEditClick = (customer) => {
-        
+    const handleAddClick = () => {
+        setModalMode('add'); 
+        setFormData({
+            name: '',
+            company: '',
+            orderValue: '',
+            orderDate: '',
+            status: 'New',
+            image: '' 
+        });
+        setSelectedCustomer(null); 
+        setShowModal(true);
+    };
 
+    const handleEditClick = (customer) => {
+        setModalMode('edit'); 
         setSelectedCustomer(customer);
         setFormData({
-            name: customer.name,
-            company: customer.company,
-            orderValue: customer.orderValue,
-            orderDate: customer.orderDate,
-            status: customer.status
+            name: customer.name || '',
+            company: customer.company || '',
+            orderValue: customer.orderValue || 0,
+            orderDate: customer.orderDate || '',
+            status: customer.status || 'New',
+            image: customer.image || ''
         });
         setShowModal(true);
     };
@@ -78,24 +95,36 @@ const Dashboard = () => {
 
     const handleSave = async () => {
         try {
-            // Chuyển đổi định dạng ngày từ yyyy-mm-dd sang dd/mm/yyyy
-            const [year, month, day] = formData.orderDate.split('-');
-            const formattedDate = `${day}/${month}/${year}`;
+            if (modalMode === 'add') {
+                
+                const newCustomer = {
+                    ...formData,
+                    id: customers.length + 1 
+                };
 
-            const updatedCustomer = {
-                ...selectedCustomer,
-                ...formData,
-                orderDate: formattedDate
-            };
+                const response = await axios.post('http://localhost:5000/customers', newCustomer);
+                console.log('Khách hàng mới đã được thêm:', response.data);
+                setCustomers([...customers, response.data]); 
+                setTotalResults(customers.length + 1);
+                setTotalPages(Math.ceil((customers.length + 1) / itemsPerPage));
+            } else {
+                
+                console.log('ID khách hàng đang chỉnh sửa:', selectedCustomer.id);
+                const updatedCustomer = {
+                    ...selectedCustomer,
+                    ...formData
+                };
 
-            await axios.put(`http://localhost:5000/customers/${selectedCustomer.id}`, updatedCustomer);
-            setCustomers(customers.map(customer =>
-                customer.id === selectedCustomer.id ? updatedCustomer : customer
-            ));
+                const response = await axios.put(`http://localhost:5000/customers/${selectedCustomer.id}`, updatedCustomer);
+                console.log('Phản hồi từ API:', response.data);
+                setCustomers(customers.map(customer =>
+                    customer.id === selectedCustomer.id ? updatedCustomer : customer
+                ));
+            }
             setShowModal(false);
         } catch (error) {
-            console.error('Error updating customer:', error);
-            alert('Không thể cập nhật khách hàng. Vui lòng thử lại.');
+            console.error('Error saving customer:', error.response ? error.response.data : error.message);
+            alert(`Không thể lưu khách hàng. Lỗi: ${error.response ? error.response.statusText : error.message}`);
         }
     };
 
@@ -253,6 +282,19 @@ const Dashboard = () => {
                     <h4 className="ms-2">Detailed Report</h4>
                 </div>
                 <div className="d-flex align-items-center">
+                    <button
+                        onClick={handleAddClick}
+                        style={{
+                            backgroundColor: "#FF4E88",
+                            border: "none",
+                            borderRadius: "5px",
+                            color: "white",
+                            marginRight: "10px",
+                            padding: "5px 10px"
+                        }}
+                    >
+                        Add User
+                    </button>
                     <button style={{ backgroundColor: "#FBF6E9", border: "1px solid #FF4E88", borderRadius: "5px", color: "#FF4E88", marginRight: "10px" }}>
                         <img src="../img/Download.png" alt="" className='p-1' />import
                     </button>
@@ -279,9 +321,16 @@ const Dashboard = () => {
                             {currentData.map(customer => (
                                 <tr key={customer.id}>
                                     <td><input type="checkbox" /></td>
-                                    <td>{customer.name}</td>
+                                    <td>
+                                        <img
+                                            src={customer.image}
+                                            alt={customer.name}
+                                            style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }}
+                                        />
+                                        {customer.name}
+                                    </td>
                                     <td>{customer.company}</td>
-                                    <td>${customer.orderValue}</td>
+                                    <td>${customer.orderValue.toLocaleString()}</td>
                                     <td>{customer.orderDate}</td>
                                     <td>
                                         <span
@@ -348,7 +397,7 @@ const Dashboard = () => {
 
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Customer</Modal.Title>
+                    <Modal.Title>{modalMode === 'add' ? 'Add Customer' : 'Edit Customer'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -359,6 +408,16 @@ const Dashboard = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Image URL</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="image"
+                                value={formData.image}
+                                onChange={handleInputChange}
+                                placeholder="Enter image URL"
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
