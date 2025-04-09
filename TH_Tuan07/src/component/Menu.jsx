@@ -1,36 +1,38 @@
 import { Nav } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
+import "./Menu.css";
 const Menu = () => {
-    const location = useLocation();
-    const currentPath = location.pathname;
-
     const navItems = [
-        { key: "/dashboard", label: "Dashboard", icon: "Squares four 1.png" },
-        { key: "/project", label: "Project", icon: "Folder.png" },
-        { key: "/team", label: "Team", icon: "Groups.png" },
-        { key: "/analytics", label: "Analytics", icon: "Pie chart.png" },
-        { key: "/message", label: "Message", icon: "Chat.png" },
-        { key: "/integration", label: "Integration", icon: "Code.png" }
+        { to: "/dashboard", label: "Dashboard", icon: "Squares four 1.png" },
+        { to: "/project", label: "Project", icon: "Folder.png" },
+        { to: "/team", label: "Team", icon: "Groups.png" },
+        { to: "/analytics", label: "Analytics", icon: "Pie chart.png" },
+        { to: "/message", label: "Message", icon: "Chat.png" },
+        { to: "/integration", label: "Integration", icon: "Code.png" }
     ];
 
     return (
         <div className="menu">
             <img src="../img/Image 1858.png" alt="" className="img-fluid mb-3" />
-            <Nav variant="pills" className="flex-column">
+            <Nav className="flex-column">
                 {navItems.map((item) => (
-                    <Nav.Item key={item.key}>
-                        <Nav.Link
-                            href={item.key}
-                            className="d-flex align-items-center"
-                            style={{
-                                backgroundColor: currentPath === item.key ? "#FF4E88" : "transparent",
-                                color: currentPath === item.key ? "white" : "black"
-                            }}
+                    <Nav.Item key={item.to}>
+                        <NavLink
+                            to={item.to}
+                            className={({ isActive }) =>
+                                "nav-link d-flex align-items-center" + (isActive ? " active-link" : "")
+                            }
+                            style={({ isActive }) => ({
+                                backgroundColor: isActive ? "#FF4E88" : "transparent",
+                                color: isActive ? "white" : "black",
+                                borderRadius: "5px",
+                                textDecoration: "none",
+                                padding: "8px"
+                            })}
                         >
-                            <div style={{ backgroundColor: "#ffffff", padding: "0px" }}><img src={`../img/${item.icon}`} alt="" /></div>
+                            <img src={`../img/${item.icon}`} alt="" />
                             <p className="ms-lg-3 mb-0">{item.label}</p>
-                        </Nav.Link>
+                        </NavLink>
                     </Nav.Item>
                 ))}
             </Nav>
@@ -65,3 +67,5 @@ const Menu = () => {
 };
 
 export default Menu;
+
+
