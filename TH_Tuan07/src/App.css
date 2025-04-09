@@ -35,7 +35,7 @@
 .container > div.content {
   grid-area: content;
   padding: 20px;
-
+  height: calc(100vh - 70px);
   overflow-y: auto;
 }
 

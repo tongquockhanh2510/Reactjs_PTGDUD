@@ -1,7 +1,7 @@
-const Header = () => {
+const Header = ({ title }) => {
     return (
         <div className="header d-flex justify-content-between align-items-center pe-4 ps-4 pt-1 pb-1" >
-            <h2 style={{color:"#FF4E88"}}>Dashboard</h2>
+            <h2 style={{color:"#FF4E88"}}>{title}</h2>
             <div className="d-flex justify-content-between align-items-center">
                 <div style={{position:"relative"}}>
                 <img src="../img/Search.png" alt="" style={{position:"absolute",left:"7px",top:"7px"}}/>

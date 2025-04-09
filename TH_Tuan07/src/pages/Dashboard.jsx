@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const Content = () => {
+ const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6; 
     const totalResults = 63; 
@@ -191,4 +191,4 @@ const Content = () => {
         </div>
     )
 }
-export default Content;
+export default Dashboard;
