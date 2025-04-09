@@ -1,11 +1,16 @@
 table{
     border-radius: 10px;
     height: 300px;
+    width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 table thead tr th{
     background: #F2F9FF !important;
 }
 table tbody tr {
-    border-bottom: 1px solid #756d6d;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
     
