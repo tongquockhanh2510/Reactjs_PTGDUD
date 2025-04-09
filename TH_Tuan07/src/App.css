@@ -45,3 +45,71 @@
   padding: 10px;
   text-align: center;
 }
+
+.nav-link {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #FF4E88;
+}
+
+.nav-link.active {
+    color: #FF4E88;
+    font-weight: bold;
+    border-bottom: 2px solid #FF4E88;
+}
+
+/* Add some spacing and styling to the main content */
+.App {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.content {
+    padding: 2rem;
+}
+
+/* Style the pagination buttons */
+.pagination button {
+    transition: all 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #FF4E88;
+    color: white;
+}
+
+/* Style the modals */
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Style the table */
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #F2F9FF;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}

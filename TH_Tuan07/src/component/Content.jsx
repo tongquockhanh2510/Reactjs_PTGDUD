@@ -1,13 +1,28 @@
 import Button from 'react-bootstrap/Button';
 import "./Content.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const Content = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6; 
-    const totalResults = 63; // Total results as shown in the image
+    const totalResults = 63; 
     const totalPages = Math.ceil(totalResults / itemsPerPage);
+    const [turnover, setTurnover] = useState({ value: 0, change: 0 });
+    const [profit, setProfit] = useState({ value: 0, change: 0 });
+    const [newCustomers, setNewCustomers] = useState({ value: 0, change: 0 });
+    useEffect(() => {
+       axios.get('http://localhost:5000/turnover').then(res => {
+        setTurnover(res.data);
+       })
+       axios.get('http://localhost:5000/profit').then(res => {
+        setProfit(res.data);
+       })
+       axios.get('http://localhost:5000/new-customers').then(res => {
+        setNewCustomers(res.data);
+       })
+    }, [])
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -64,8 +79,8 @@ const Content = () => {
                     <div className="row p-2 me-1" style={{ backgroundColor: "#FFE2E2", borderRadius: "5px" }} >
                         <div className="col-10">
                             <p style={{ fontWeight: "bold", fontSize: "18px", marginBottom: "5px" }}>Turnover</p>
-                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> $92,405</h3>
-                            <p> <span className="text-success">5.39%</span> period of change</p>
+                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> ${turnover.value.toLocaleString()}</h3>
+                            <p> <span className="text-success">{turnover.change}%</span> period of change</p>
                         </div>
                         <div className="col-2 p-1">
                             <img src="../img/Button 1509.png" alt="" style={{ width: "35px" }} />
@@ -76,8 +91,8 @@ const Content = () => {
                     <div className="row p-2 me-1" style={{ backgroundColor: "#F2F9FF", borderRadius: "5px" }} >
                         <div className="col-10">
                             <p style={{ fontWeight: "bold", fontSize: "18px", marginBottom: "5px" }}>Frofit</p>
-                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> $32.218</h3>
-                            <p> <span className="text-success">5.39%</span> period of change</p>
+                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> ${profit.value.toLocaleString()}</h3>
+                            <p> <span className="text-success">{profit.change}%</span> period of change</p>
                         </div>
                         <div className="col-2 p-1">
                             <img src="../img/Button 1529.png" alt="" style={{ width: "35px" }} />
@@ -88,8 +103,8 @@ const Content = () => {
                     <div className="row p-2 " style={{ backgroundColor: "#F2F9FF", borderRadius: "5px" }} >
                         <div className="col-10">
                             <p style={{ fontWeight: "bold", fontSize: "18px", marginBottom: "5px" }}>New Customer</p>
-                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> $298</h3>
-                            <p> <span className="text-success">5.39%</span> period of change</p>
+                            <h3 style={{ fontWeight: "bold", marginBottom: "15px" }}> ${newCustomers.value.toLocaleString()}</h3>
+                            <p> <span className="text-success">{newCustomers.change}%</span> period of change</p>
                         </div>
                         <div className="col-2 p-1">
                             <img src="../img/Button 1530.png" alt="" style={{ width: "35px" }} />
