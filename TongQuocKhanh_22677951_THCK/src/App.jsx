@@ -36,6 +36,13 @@ function App() {
     setForm({ name: "", price: "", category: "", stock: "" });
   };
 
+  const handleDelete = (id) => {
+    const confirmDelete = confirm("Bạn có chắc muốn xoá sản phẩm này?");
+    if (confirmDelete) {
+      setProducts(products.filter(product => product.id !== id));
+    }
+  };
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Thêm sản phẩm mới</h1>
@@ -101,7 +108,12 @@ function App() {
               <td className="border px-4 py-2">{product.category}</td>
               <td className="border px-4 py-2">{product.stock}</td>
               <td className="border px-4 py-2">
-                <button className="bg-red-500 text-white px-2 py-1 rounded">Xoá</button>
+                <button
+                  onClick={() => handleDelete(product.id)}
+                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                >
+                  Xoá
+                </button>
               </td>
             </tr>
           ))}
