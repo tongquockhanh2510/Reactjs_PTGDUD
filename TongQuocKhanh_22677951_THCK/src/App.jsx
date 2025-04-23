@@ -55,6 +55,10 @@ function App() {
       selectedCategory === "Tất cả" || product.category === selectedCategory
     );
 
+  // Tổng số sản phẩm và tồn kho
+  const totalProducts = filteredProducts.length;  // Tổng số sản phẩm trong danh sách
+  const totalStock = filteredProducts.reduce((acc, product) => acc + product.stock, 0);  // Tổng tồn kho của các sản phẩm
+
   const uniqueCategories = ["Tất cả", ...new Set(products.map(p => p.category))];
 
   return (
@@ -165,9 +169,16 @@ function App() {
             )}
           </tbody>
         </table>
+
+        {/* Hiển thị tổng số sản phẩm và tổng tồn kho dưới danh sách sản phẩm */}
+        <div className="flex justify-between mt-4">
+          <span className="font-semibold">Tổng số sản phẩm: {totalProducts}</span>
+          <span className="font-semibold">Tổng tồn kho: {totalStock}</span>
+        </div>
       </div>
     </div>
   );
 }
 
 export default App;
+  
