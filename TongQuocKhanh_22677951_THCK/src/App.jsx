@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ProductItem from "./component/ProductItem";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [products, setProducts] = useState(() => {
@@ -69,66 +70,76 @@ function App() {
   const uniqueCategories = ["Tất cả", ...new Set(products.map(p => p.category))];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="p-6 w-full max-w-5xl bg-white rounded shadow">
-        <h1 className="text-2xl font-bold mb-4">Quản lý sản phẩm</h1>
+    <div className="container my-5">
+      <h1 className="text-center mb-4">Quản lý sản phẩm</h1>
 
-        {/* Form thêm sản phẩm */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+      {/* Form thêm sản phẩm */}
+      <div className="row mb-4">
+        <div className="col-md-3">
           <input
             type="text"
             name="name"
             placeholder="Tên sản phẩm"
             value={form.name}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="form-control"
           />
+        </div>
+        <div className="col-md-3">
           <input
             type="number"
             name="price"
             placeholder="Giá"
             value={form.price}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="form-control"
           />
+        </div>
+        <div className="col-md-3">
           <input
             type="text"
             name="category"
             placeholder="Danh mục"
             value={form.category}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="form-control"
           />
+        </div>
+        <div className="col-md-3">
           <input
             type="number"
             name="stock"
             placeholder="Tồn kho"
             value={form.stock}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="form-control"
           />
         </div>
+      </div>
 
-        <button
-          onClick={handleAddProduct}
-          className="bg-green-500 text-white px-4 py-2 rounded mb-6 hover:bg-green-600"
-        >
-          Thêm sản phẩm
-        </button>
+      <button
+        onClick={handleAddProduct}
+        className="btn btn-success w-100 mb-4"
+      >
+        Thêm sản phẩm
+      </button>
 
-        {/* Bộ lọc và tìm kiếm */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      {/* Bộ lọc và tìm kiếm */}
+      <div className="row mb-4">
+        <div className="col-md-6">
           <input
             type="text"
             placeholder="Tìm kiếm theo tên..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2 rounded"
+            className="form-control"
           />
+        </div>
+        <div className="col-md-6">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border p-2 rounded"
+            className="form-control"
           >
             {uniqueCategories.map((cat, index) => (
               <option key={index} value={cat}>
@@ -137,38 +148,38 @@ function App() {
             ))}
           </select>
         </div>
+      </div>
 
-        {/* Danh sách sản phẩm */}
-        <h2 className="text-xl font-semibold mb-2">Danh sách sản phẩm</h2>
-        <table className="table-auto w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-4 py-2">Tên</th>
-              <th className="border px-4 py-2">Giá</th>
-              <th className="border px-4 py-2">Danh mục</th>
-              <th className="border px-4 py-2">Tồn kho</th>
-              <th className="border px-4 py-2">Hành động</th>
+      {/* Danh sách sản phẩm */}
+      <h2 className="text-center mb-3">Danh sách sản phẩm</h2>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr className="table-dark">
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Danh mục</th>
+            <th>Tồn kho</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.map((product) => (
+            <ProductItem key={product.id} product={product} onDelete={handleDelete} />
+          ))}
+          {filteredProducts.length === 0 && (
+            <tr>
+              <td colSpan="5" className="text-center">
+                Không tìm thấy sản phẩm phù hợp.
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map((product) => (
-              <ProductItem key={product.id} product={product} onDelete={handleDelete} />
-            ))}
-            {filteredProducts.length === 0 && (
-              <tr>
-                <td colSpan="5" className="text-center p-4">
-                  Không tìm thấy sản phẩm phù hợp.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+          )}
+        </tbody>
+      </table>
 
-        {/* Hiển thị tổng số sản phẩm và tổng tồn kho dưới danh sách sản phẩm */}
-        <div className="flex justify-between mt-4">
-          <span className="font-semibold">Tổng số sản phẩm: {totalProducts}</span>
-          <span className="font-semibold">Tổng tồn kho: {totalStock}</span>
-        </div>
+      {/* Hiển thị tổng số sản phẩm và tổng tồn kho dưới danh sách sản phẩm */}
+      <div className="d-flex justify-content-between mt-4">
+        <span className="font-weight-bold">Tổng số sản phẩm: {totalProducts}</span>
+        <span className="font-weight-bold">Tổng tồn kho: {totalStock}</span>
       </div>
     </div>
   );
