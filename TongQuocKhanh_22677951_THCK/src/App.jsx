@@ -4,7 +4,9 @@ function App() {
   const [products, setProducts] = useState([
     { id: 1, name: "Áo thun", price: 150000, category: "Thời trang", stock: 10 },
     { id: 2, name: "Tai nghe", price: 500000, category: "Công nghệ", stock: 5 },
-    { id: 3, name: "Máy xay sinh tố", price: 800000, category: "Gia dụng", stock: 3 }
+    { id: 3, name: "Máy xay sinh tố", price: 800000, category: "Gia dụng", stock: 3 },
+    { id: 4, name: "Laptop", price: 15000000, category: "Công nghệ", stock: 2 },
+    { id: 5, name: "Quạt máy", price: 400000, category: "Gia dụng", stock: 8 },
   ]);
 
   const [form, setForm] = useState({
@@ -15,6 +17,7 @@ function App() {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,15 +42,20 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    const confirmDelete = confirm("Bạn có chắc muốn xoá sản phẩm này?");
-    if (confirmDelete) {
+    if (confirm("Bạn có chắc muốn xoá sản phẩm này?")) {
       setProducts(products.filter(product => product.id !== id));
     }
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products
+    .filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter(product =>
+      selectedCategory === "Tất cả" || product.category === selectedCategory
+    );
+
+  const uniqueCategories = ["Tất cả", ...new Set(products.map(p => p.category))];
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -97,15 +105,26 @@ function App() {
           Thêm sản phẩm
         </button>
 
-        {/* Ô tìm kiếm */}
-        <div className="mb-4">
+        {/* Bộ lọc và tìm kiếm */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <input
             type="text"
             placeholder="Tìm kiếm theo tên..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2 w-full rounded"
+            className="border p-2 rounded"
           />
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="border p-2 rounded"
+          >
+            {uniqueCategories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Danh sách sản phẩm */}
@@ -137,6 +156,13 @@ function App() {
                 </td>
               </tr>
             ))}
+            {filteredProducts.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center p-4">
+                  Không tìm thấy sản phẩm phù hợp.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
