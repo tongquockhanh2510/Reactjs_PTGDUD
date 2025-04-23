@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import ProductItem from "./component/ProductItem";
 
 function App() {
   const [products, setProducts] = useState(() => {
-    // Tải danh sách sản phẩm từ localStorage nếu có
     const storedProducts = localStorage.getItem("products");
     return storedProducts ? JSON.parse(storedProducts) : [
       { id: 1, name: "Áo thun", price: 150000, category: "Thời trang", stock: 10 },
@@ -24,7 +24,6 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
 
   useEffect(() => {
-    // Lưu danh sách sản phẩm vào localStorage mỗi khi có sự thay đổi
     localStorage.setItem("products", JSON.stringify(products));
   }, [products]);
 
@@ -64,9 +63,8 @@ function App() {
       selectedCategory === "Tất cả" || product.category === selectedCategory
     );
 
-  // Tổng số sản phẩm và tồn kho
-  const totalProducts = filteredProducts.length;  // Tổng số sản phẩm trong danh sách
-  const totalStock = filteredProducts.reduce((acc, product) => acc + product.stock, 0);  // Tổng tồn kho của các sản phẩm
+  const totalProducts = filteredProducts.length;
+  const totalStock = filteredProducts.reduce((acc, product) => acc + product.stock, 0);
 
   const uniqueCategories = ["Tất cả", ...new Set(products.map(p => p.category))];
 
@@ -154,20 +152,7 @@ function App() {
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.id}>
-                <td className="border px-4 py-2">{product.name}</td>
-                <td className="border px-4 py-2">{product.price.toLocaleString()}đ</td>
-                <td className="border px-4 py-2">{product.category}</td>
-                <td className="border px-4 py-2">{product.stock}</td>
-                <td className="border px-4 py-2">
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                  >
-                    Xoá
-                  </button>
-                </td>
-              </tr>
+              <ProductItem key={product.id} product={product} onDelete={handleDelete} />
             ))}
             {filteredProducts.length === 0 && (
               <tr>
