@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [products, setProducts] = useState([
-    { id: 1, name: "Áo thun", price: 150000, category: "Thời trang", stock: 10 },
-    { id: 2, name: "Tai nghe", price: 500000, category: "Công nghệ", stock: 5 },
-    { id: 3, name: "Máy xay sinh tố", price: 800000, category: "Gia dụng", stock: 3 },
-    { id: 4, name: "Laptop", price: 15000000, category: "Công nghệ", stock: 2 },
-    { id: 5, name: "Quạt máy", price: 400000, category: "Gia dụng", stock: 8 },
-  ]);
+  const [products, setProducts] = useState(() => {
+    // Tải danh sách sản phẩm từ localStorage nếu có
+    const storedProducts = localStorage.getItem("products");
+    return storedProducts ? JSON.parse(storedProducts) : [
+      { id: 1, name: "Áo thun", price: 150000, category: "Thời trang", stock: 10 },
+      { id: 2, name: "Tai nghe", price: 500000, category: "Công nghệ", stock: 5 },
+      { id: 3, name: "Máy xay sinh tố", price: 800000, category: "Gia dụng", stock: 3 },
+      { id: 4, name: "Laptop", price: 15000000, category: "Công nghệ", stock: 2 },
+      { id: 5, name: "Quạt máy", price: 400000, category: "Gia dụng", stock: 8 },
+    ];
+  });
 
   const [form, setForm] = useState({
     name: "",
@@ -18,6 +22,11 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+
+  useEffect(() => {
+    // Lưu danh sách sản phẩm vào localStorage mỗi khi có sự thay đổi
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -181,4 +190,3 @@ function App() {
 }
 
 export default App;
-  
